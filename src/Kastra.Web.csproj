@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ReleaseVersion>0.9</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Kastra.Core" Version="0.8.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools">
+      <Version>2.0.0</Version>
+    </DotNetCliToolReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Identity\" />
+    <Folder Include="Views\Page\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Views\Install\" />
+    <Folder Include="wwwroot\js\components\" />
+    <Folder Include="Areas\API\" />
+    <Folder Include="Areas\API\Controllers\" />
+    <Folder Include="Areas\API\Models\" />
+    <Folder Include="Areas\API\Models\Page\" />
+    <Folder Include="Areas\API\Models\User\" />
+    <Folder Include="Areas\API\Models\Module\" />
+    <Folder Include="Areas\API\Models\Permission\" />
+    <Folder Include="Areas\API\Models\Role\" />
+    <Folder Include="Models\Install\" />
+    <Folder Include="Models\Template\" />
+    <Folder Include="Models\Account\" />
+    <Folder Include="Areas\Admin\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Views\" />
+    <Folder Include="Areas\Admin\Views\Home\" />
+    <Folder Include="Areas\Admin\wwwroot\" />
+    <Folder Include="Areas\API\Models\Template\" />
+    <Folder Include="Areas\API\Models\ModuleDefinition\" />
+    <Folder Include="Areas\API\Models\Place\" />
+    <Folder Include="Areas\API\Models\SiteConfiguration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
+  </ItemGroup>
+</Project>

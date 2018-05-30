@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>@ViewBag.Title</title>
+		<meta charset="utf-8" />
+
+		@if(!String.IsNullOrEmpty(ViewBag.MetaDescription))
+        {
+            <meta name="description" content="@ViewBag.MetaDescription" />
+        }
+		@if(!String.IsNullOrEmpty(ViewBag.MetaKeywords))
+        {
+		    <meta name="keywords" content="@ViewBag.MetaKeywords" />
+        }
+		@if(!String.IsNullOrEmpty(ViewBag.MetaRobot))
+		{
+		    <meta name="robots" content="@ViewBag.MetaRobot" />
+		}
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="~/css/main.css" />
+		<link rel="stylesheet" href="~/css/sidebar.css" />
+		<link rel="stylesheet" href="~/css/ionicons.min.css" />
+
+		<!-- Scripts -->
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/jquery.scrollex.min.js"></script>
+		<script src="/js/plugins/dynamicsjs/dynamics.min.js"></script>
+		<script src="/js/skel.min.js"></script>
+		<script src="/js/util.js"></script>
+		<script src="/js/main.js"></script>
+		
+		@RenderSection("scripts", required: false)
+	</head>
+	<body>
+
+        <!-- Header -->
+        <header id="header" class="alt">
+            <!--<div class="logo"><a asp-controller="home" asp-action="index">Hielo <span>by TEMPLATED</span></a></div>-->
+            <!--<a href="#menu">Menu</a>-->
+        </header>
+
+        <!-- One -->
+        <section id="One" class="wrapper style3">
+            <div class="inner">
+                <header class="align-center">
+                    <p>Free CMS</p>
+                    <h2>Kastra</h2>
+                </header>
+            </div>
+        </section>
+		
+		<div id="kastra-content">
+			@RenderSection("KastraMessage", false)
+		</div>
+        
+		<!-- Wrapper -->
+		@RenderBody()
+
+		<!-- Footer -->
+        <footer id="footer">
+            <div class="container">
+                <ul class="icons">
+                    <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                    <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+                </ul>
+            </div>
+            <div class="copyright">
+                &copy; 2017 Kastra. All rights reserved.
+            </div>
+        </footer>
+	</body>
+</html>

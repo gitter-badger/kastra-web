@@ -1,0 +1,227 @@
+﻿@model Kastra.Web.Models.Install.IndexViewModel
+@{
+    Layout = "_LayoutInstall";
+    ViewData["Title"] = "Kastra - Installation";
+}
+
+<section id="two" class="wrapper style2">
+    <div class="inner">
+        <div class="box">
+            <div class="content">
+                <header class="align-center">
+                    <h2>@ViewData["Title"].</h2>
+                </header>
+                <form asp-controller="Install" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    <h4>Configure your website.</h4>
+                    <hr />
+                    <div asp-validation-summary="All"></div>
+                    <div id="account-form">
+                        <div class="field">
+                            <label asp-for="Email"></label>
+                            <div>
+                                <input asp-for="Email" />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label asp-for="Password"></label>
+                            <div>
+                                <input asp-for="Password" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label asp-for="ConfirmPassword"></label>
+                            <div>
+                                <input asp-for="ConfirmPassword"/>
+                                <span asp-validation-for="ConfirmPassword"></span>
+                            </div>
+                        </div>
+                        <ul class="actions">
+                            <li><a id="btn-account" href="javascript:void(0)" class="btn btn-default button">Install</a></li>
+                        </ul>
+                    </div>
+                    <div id="database-form">
+                        <div class="field">
+                            <label asp-for="DatabaseServer"></label>
+                            <div>
+                                <input asp-for="DatabaseServer"/>
+                                <span asp-validation-for="DatabaseServer"></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label asp-for="DatabaseName"></label>
+                            <div>
+                                <input asp-for="DatabaseName"/>
+                                <span asp-validation-for="DatabaseName"></span>
+                            </div>
+                        </div>
+                        <div class="checkbox field">
+                            <input asp-for="IntegratedSecurity"/>
+                            <label asp-for="IntegratedSecurity"></label>
+                        </div>
+
+                        <div id="credentials">
+                            <div class="field">
+                                <label asp-for="DatabaseLogin"></label>
+                                <div>
+                                    <input asp-for="DatabaseLogin"/>
+                                    <span asp-validation-for="DatabaseLogin"></span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label asp-for="DatabasePassword"></label>
+                                <div>
+                                    <input asp-for="DatabasePassword"/>
+                                    <span asp-validation-for="DatabasePassword"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="actions">
+                            <li><a href="javascript:void(0)" id="btn-database" class="btn btn-default button">Validate</a></li>
+                        </ul>
+                    </div>
+                </form>
+
+                <div id="loader-component">
+                    <div class="loader">
+                        <div class="inner one"></div>
+                        <div class="inner two"></div>
+                        <div class="inner three"></div>
+                    </div>
+                    <p class="message"></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    (function($) {
+
+        function initEvents() {
+            $("#IntegratedSecurity").click(function() {
+                if($("#IntegratedSecurity").is(':checked'))
+                    $('#credentials').slideUp();
+                else
+                    $('#credentials').slideDown();
+            });
+
+            $('#btn-account').click(function() {
+                sendAccountForm();
+            });
+
+            $('#btn-database').click(function() {
+                sendDatabaseForm();
+            });
+        }
+
+        function displayForm(database) {
+            if(database) {
+                $('#account-form').show();
+                $('#database-form').hide();
+            }
+            else {
+                $('#account-form').hide();
+                $('#database-form').show();
+            }
+        }
+
+        function sendDatabaseForm() {
+            displayLoader("Installing database ...");
+            var data = {
+                        DatabaseServer: $('#DatabaseServer').val(),
+                        DatabaseName: $('#DatabaseName').val(),
+                        DatabaseLogin: $('#DatabaseLogin').val(),
+                        DatabasePassword: $('#DatabasePassword').val(),
+                        IntegratedSecurity: $('#IntegratedSecurity').is(':checked')
+                    };
+
+            $.ajax({
+                type: "POST",
+                url: "/Install/Database",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    hideLoader();
+                    checkDatabase();
+                },
+                error: function (jqXHR, errormessage) {
+                    alert(jqXHR.responseText);
+                    hideLoader();
+                    return false;
+                }
+            });
+        }
+
+        function sendAccountForm() {
+
+            displayLoader("Installing data ...");
+
+            var data = {
+                        Email: $('#Email').val(),
+                        Password: $('#Password').val(),
+                        ConfirmPassword: $('#ConfirmPassword').val()
+                    };
+
+            $.ajax({
+                type: "POST",
+                url: "/Install/Account",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function () {
+                    hideLoader();
+                    $('#account-form').hide();
+                    $('#database-form').hide();
+                    document.location.href="/";
+                },
+                error: function (jqXHR, errormessage) {
+                    hideLoader();
+                    checkDatabase();
+                    alert(jqXHR.responseText);
+                    return false;
+                }
+            });
+        }
+
+        function checkDatabase() {
+            var databaseExists = false;
+            $.ajax({
+                type: "GET",
+                url: "/Install/CheckDatabase",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    displayForm(true);
+                },
+                error: function (errormessage) {
+                    displayForm(false);
+                }
+            });
+
+            return databaseExists;
+        }
+
+        function displayLoader(message) {
+            $("form").hide();
+            $("#loader-component").show();
+            $("#loader-component .message").empty().append(message);
+        }
+
+        function hideLoader() {
+            $("#loader-component").hide();
+            $("form").show();
+        }
+
+        $(function() {
+            initEvents();
+            checkDatabase();
+            hideLoader();
+        });
+
+    })(jQuery);
+</script>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

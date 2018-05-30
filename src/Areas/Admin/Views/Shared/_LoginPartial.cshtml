@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Kastra.Web.Models
+@using Kastra.Web.Identity
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div id="sidebar-menu" class="menu-icon">
+        <span></span>
+    </div>
+
+    <div class="sidebar">
+        <div style="height:75px;"></div>
+        <a class="user-icon" asp-controller="Manage" asp-action="Index" asp-fragment="wrapper"><img alt="" src="/images/avatar.jpg" /></a>
+        <p>Hello @UserManager.GetUserName(User)!</p>
+        <a href="/"><span class="ion-ios-home-outline"></span>Home</a>
+        <a asp-area="Admin" asp-controller="Manage" asp-action="Index" asp-fragment="wrapper"><span class="ion-ios-person-outline"></span>Mon compte</a>
+        <a asp-area="Admin" asp-controller="Site" asp-action="Index" asp-fragment="wrapper"><span class="ion-ios-monitor-outline"></span> Admnistration</a>
+        <a asp-area="Admin" asp-controller="Page" asp-action="Index"><span class="ion-ios-book-outline"></span>Page manager</a>
+		<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="ion-ios-people-outline"></span>User manager</a>
+        <a asp-area="Admin" asp-controller="SiteConfiguration" asp-action="Index" asp-fragment="wrapper"><span class="ion-ios-gear-outline"></span>Parameters</a>
+
+        <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+            <a href="javascript:void(0)"><span class="ion-ios-close-outline"></span>Log off</a>
+        </form>
+
+        <svg id="sidebar-wave" class="sidebar-wave" width="100%" height="100%" viewBox="0 0 200 900" version="1.1" preserveAspectRatio="none">
+            <path d="M200,0c0,0 -200,46.405 -200,177c0,130.595 126.228,90.241 149,287c22.772,196.759 51,436 51,436l32,0l-4,-900l-28,0Z" 
+                data-to="M0,0c0,0 0,46.405 0,177c0,130.595 1.152,98.101 0,296c-1.153,198.07 0,427 0,427l200,0l0,-900l-200,0Z"/>
+        </svg>
+    </div>
+
+    <script src="/js/sidebar.js"></script>
+}
+else
+{
+    <div class="nav navbar-nav navbar-right">
+        <a href="~/"><span>Home</span></a>
+        <span>&#8239;</span>
+        <a asp-controller="Account" asp-action="Register"><span>Register</span></a>
+		<span>&#8239;</span>
+        <a asp-controller="Account" asp-action="Login"><span>Log in</span></a>
+    </div>
+}

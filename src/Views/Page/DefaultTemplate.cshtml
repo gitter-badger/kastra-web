@@ -1,0 +1,14 @@
+﻿@model Kastra.Web.Models.Template.DefaultTemplateViewModel
+@using Kastra.Core.ViewComponents
+
+<nav>
+    @await Component.InvokeAsync(Model.Header.ModuleViewComponent, new { data = Model.Header })
+</nav>
+
+<section id="main" class="main wrapper style2">
+    @await Component.InvokeAsync(Model.Body.ModuleViewComponent, new { data = Model.Body })
+</section>
+
+<footer>
+    @await Component.InvokeAsync(Model.Footer.ModuleViewComponent, new { data = Model.Footer })
+</footer>

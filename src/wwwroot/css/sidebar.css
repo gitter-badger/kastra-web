@@ -1,0 +1,148 @@
+body {
+    overflow-x: hidden;
+    height: 100%; 
+}
+
+/* Menu icon */
+.menu-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 54px;
+    width: 54px;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.menu-icon.is-opened {
+    position: fixed;
+}
+
+.menu-icon span {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #FFF;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.menu-icon span::before,
+.menu-icon span::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 22px;
+    height: 2px;
+    top: 0;
+    left: 0;
+    transform: translateY(-6px);
+    transition: transform 0.5s;
+    background-color: #FFF;
+}
+
+.menu-icon span::after {
+    transform: translateY(6px);
+}
+
+.menu-icon:hover span::before {
+    transform: translateY(-8px);
+}
+
+.menu-icon:hover span::after {
+    transform: translateY(8px);
+}
+
+.menu-icon.is-opened span {
+    background: transparent;
+}
+
+.menu-icon.is-opened span::before {
+    transform: translateY(0) rotate(45deg);
+}
+
+.menu-icon.is-opened span::after {
+    transform: translateY(0) rotate(-45deg);
+}
+
+/* Sidebar */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -200px;
+    bottom: 0;
+    width: 200px;
+    height: 100%;
+    transform: translateX(0);
+    transition: transform 0.3s;
+    z-index: 1000;
+}
+
+.has-sidebar .sidebar {
+    transform: translateX(-200px);
+}
+
+.sidebar a {
+    display: block;
+    height: 66px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #2b333c;
+    line-height: 66px;
+    color: rgba(255,255,255, 0.4);
+    transform: translateX(200px);
+    transition: color 0.3s;
+    text-decoration: none;
+    text-align: left;
+}
+
+.sidebar a span {
+    padding: 10px;
+}
+
+.has-sidebar .sidebar a {
+    transform: translateX(0);
+}
+
+.sidebar a:hover, 
+.sidebar a:focus {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #FFF;
+    text-decoration: none;
+}
+
+.sidebar-wave {
+    fill: #323a44;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.sidebar p {
+    padding: 15px;
+    color: rgba(255,255,255, 0.5);
+    text-align: center;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.sidebar .user-icon, .sidebar .user-icon img {
+    margin: auto;
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+}
+
+.sidebar #logoutForm {
+    position: fixed;
+    bottom: 0;
+    width: 200px;
+    margin: 0;
+}
