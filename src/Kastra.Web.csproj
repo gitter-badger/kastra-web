@@ -48,6 +48,7 @@
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
     <Content Remove="Areas\Admin\Views\Module\Settings.cshtml" />
+    <Content Remove="Areas\Admin\Views\Shared\_ModuleLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Identity\ApplicationRole.cs" />
@@ -56,5 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Admin\Views\Module\Settings.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_ModuleLayout.cshtml" />
   </ItemGroup>
 </Project>
