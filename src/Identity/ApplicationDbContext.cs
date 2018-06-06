@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Kastra.Core.Dto;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kastra.Web.Identity
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, String>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

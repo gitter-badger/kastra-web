@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Kastra.Core" Version="0.8.6" />
+    <PackageReference Include="Kastra.Core" Version="0.8.10" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools">
@@ -41,8 +41,20 @@
     <Folder Include="Areas\API\Models\ModuleDefinition\" />
     <Folder Include="Areas\API\Models\Place\" />
     <Folder Include="Areas\API\Models\SiteConfiguration\" />
+    <Folder Include="Areas\Admin\Views\Module\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Models\Module\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
+    <Content Remove="Areas\Admin\Views\Module\Settings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Identity\ApplicationRole.cs" />
+    <Compile Remove="Identity\ApplicationUser.cs" />
+    <Compile Remove="Controllers\TemplateController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\Module\Settings.cshtml" />
   </ItemGroup>
 </Project>

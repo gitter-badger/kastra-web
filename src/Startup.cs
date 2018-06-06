@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Kastra.Core;
+using Kastra.Core.Dto;
 using Kastra.Web.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;

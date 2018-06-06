@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Kastra.Web.Identity;
 using Kastra.Web.Models.Account;
 using Kastra.Web.Controllers;
+using Kastra.Core.Dto;
 
 namespace Kastra.Controllers
 {

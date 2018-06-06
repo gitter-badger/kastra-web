@@ -3,6 +3,7 @@ using Kastra.Core.Dto;
 using Kastra.Core.Services;
 using Kastra.Web.Areas.API.Models.SiteConfiguration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kastra.Web.API.Controllers
@@ -61,6 +62,18 @@ namespace Kastra.Web.API.Controllers
             }
 
             _parameterManager.SaveSiteConfiguration(conf);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Restart the website.
+        /// </summary>
+        /// <returns></returns>
+        /// <param name="applicationLifetime">Application lifetime.</param>
+        public IActionResult Restart([FromServices] IApplicationLifetime applicationLifetime)
+        {
+            applicationLifetime.StopApplication();
 
             return Ok();
         }

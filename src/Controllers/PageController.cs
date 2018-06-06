@@ -1,5 +1,4 @@
-﻿using Kastra.Core;
-using Kastra.Core.Business;
+﻿using Kastra.Core.Business;
 using Kastra.Core.Controllers;
 using Kastra.Core.Services;
 using Microsoft.AspNetCore.Mvc;
