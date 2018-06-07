@@ -16,11 +16,15 @@ namespace Kastra.Web.API.Controllers
     public class ModuleDefinitionController : Controller
     {
         private readonly IModuleManager _moduleManager;
+        private readonly ISecurityManager _securityManager;
         private readonly IViewManager _viewManager;
 
-        public ModuleDefinitionController(IModuleManager moduleManager, IViewManager viewManager)
+        public ModuleDefinitionController(IModuleManager moduleManager,
+                                          ISecurityManager securityManager,
+                                          IViewManager viewManager)
         {
             _moduleManager = moduleManager;
+            _securityManager = securityManager;
             _viewManager = viewManager;
         }
 
@@ -83,6 +87,72 @@ namespace Kastra.Web.API.Controllers
 
             // Install module
             _moduleManager.InstallModule(assembly);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Uninstall([FromBody] ModuleDefinitionModel model)
+        {
+            Assembly assembly = null;
+            ModuleDefinitionInfo moduleDefinition = null;
+            IList<ModuleInfo> modules = null;
+            IList<ModulePermissionInfo> modulesPermissions = null;
+
+            if (model ==  null || String.IsNullOrEmpty(model.Name))
+            {
+                return BadRequest();
+            }
+
+            // Get assembly with assembly name
+            assembly = KastraAssembliesContext.Instance.GetModuleAssemblies()
+                                              .SingleOrDefault(a => a.GetName().Name == model.Name);
+
+            if (assembly == null)
+            {
+                return BadRequest("Module assembly not found");
+            }
+
+            // Uninstall module
+            _moduleManager.UninstallModule(assembly);
+
+            // Get module definition
+            moduleDefinition = _viewManager.GetModuleDef(model.Id, true);
+
+            if(moduleDefinition == null)
+            {
+                return BadRequest("Cannot find the module definition");
+            }
+
+            modules = _viewManager.GetModulesList().Where(m => m.ModuleDefId == moduleDefinition.ModuleDefId).ToList();
+
+            // Remove module controls
+            foreach(ModuleControlInfo moduleControl in moduleDefinition.ModuleControls)
+            {
+                _viewManager.DeleteModuleControl(moduleControl.ModuleControlId);
+            }
+
+            // Remove all modules
+            if(modules != null)
+            {
+                foreach (ModuleInfo module in modules)
+                {
+                    modulesPermissions = _securityManager.GetModulePermissionsByModuleId(module.ModuleId);
+
+                    if (modulesPermissions != null)
+                    {
+                        foreach (ModulePermissionInfo modulePermission in modulesPermissions)
+                        {
+                            _securityManager.DeleteModulePermission(modulePermission.ModulePermissionId);
+                        }
+                    }
+
+                    _viewManager.DeleteModule(module.ModuleId);
+                }
+            }
+
+            // Remove module definition
+            _viewManager.DeleteModuleDef(moduleDefinition.ModuleDefId);
 
             return Ok();
         }
