@@ -95,7 +95,7 @@ namespace Kastra.Web.API.Controllers
                 }
             }
 
-            return Ok();
+            return Ok(new { RoleId = role.Id });
         }
 
 
