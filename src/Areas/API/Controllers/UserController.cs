@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Kastra.Core.Dto;
 using Kastra.Web.API.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Kastra.Web.API.Controllers
 {
@@ -41,6 +44,60 @@ namespace Kastra.Web.API.Controllers
             }
 
             return Json(userModels);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody]UserModel model)
+        {
+            // Save user
+            ApplicationUser user = _userManager.Users.Include(u => u.Roles).SingleOrDefault(u => u.Id == model.Id);
+
+            if(user == null)
+            {
+                user = new ApplicationUser();
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+                if(!result.Succeeded)
+                {
+                    //return new JsonResult(result.Errors) { StatusCode = (int)HttpStatusCode.BadRequest };
+                    return BadRequest(result);
+                }
+            }
+            else {
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+
+                await _userManager.UpdateAsync(user);
+            }
+
+            // Save roles
+            IdentityUserRole<String> currentRole = null;
+            IList<ApplicationRole> roles = _roleManager.Roles.ToList();
+            IList<IdentityUserRole<String>> currentRoles = user.Roles.ToList();
+
+            if(roles != null)
+            {
+                foreach (var role in roles)
+                {
+                    currentRole = currentRoles.SingleOrDefault(cr => cr.RoleId == role.Id);
+
+                    if (currentRole != null)
+                    {
+                        if (!model.Roles.Any(sr => sr == role.Id))
+                            await _userManager.RemoveFromRoleAsync(user, role.Name);
+                    }
+                    else
+                    {
+                        if (model.Roles.Any(sr => sr == role.Id))
+                            await _userManager.AddToRoleAsync(user, role.Name);
+                    }
+                }
+            }
+
+            return Ok(new { Succeeded = true, UserId = user.Id });
         }
 
 		[HttpGet]

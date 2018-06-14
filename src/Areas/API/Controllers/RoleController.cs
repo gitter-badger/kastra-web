@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kastra.Core;
+using Kastra.Core.Business;
 using Kastra.Core.Dto;
 using Kastra.Web.API.Models.Role;
 using Microsoft.AspNetCore.Authorization;
@@ -17,10 +18,12 @@ namespace Kastra.Web.API.Controllers
     public class RoleController : Controller
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly ISecurityManager _securityManager;
         
-        public RoleController(RoleManager<ApplicationRole> roleManager)
+        public RoleController(RoleManager<ApplicationRole> roleManager, ISecurityManager securityManager)
         {
             _roleManager = roleManager;
+            _securityManager = securityManager;
         }
 
         [HttpGet]
@@ -36,6 +39,65 @@ namespace Kastra.Web.API.Controllers
 
             return Json(roleModels);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody]RoleModel model)
+        {
+            bool createMode = false;
+
+            // Save role
+            ApplicationRole role = _roleManager.Roles.SingleOrDefault(r => r.Id == model.Id);
+
+            if (role == null)
+            {
+                createMode = true;
+                role = new ApplicationRole();
+            }
+
+            role.Name = model.Name;
+
+            // Save permissions
+            IdentityRoleClaim<String> currentPermission = null;
+            IList<PermissionInfo> permissions = _securityManager.GetPermissionsList();
+            IList<IdentityRoleClaim<String>> currentPermissions = role.Claims.ToList();
+
+            if (createMode)
+            {
+                await _roleManager.CreateAsync(role);
+            }
+            else
+            {
+                await _roleManager.UpdateAsync(role);
+            }
+
+            foreach (PermissionInfo permission in permissions)
+            {
+                currentPermission = currentPermissions.SingleOrDefault(c => c.ClaimType == Constants.ModuleConfig.ModulePermissionType && c.ClaimValue == permission.PermissionId.ToString());
+
+                if (currentPermission != null)
+                {
+                    if (!model.Permissions.Any(sp => sp == permission.PermissionId))
+                    {
+                        await _roleManager.RemoveClaimAsync(role, currentPermission.ToClaim());
+                    }
+                }
+                else
+                {
+                    if (model.Permissions.Any(sp => sp == permission.PermissionId))
+                    {
+                        currentPermission = new IdentityRoleClaim<String>();
+                        currentPermission.ClaimType = Constants.ModuleConfig.ModulePermissionType;
+                        currentPermission.ClaimValue = permission.PermissionId.ToString();
+                        currentPermission.RoleId = role.Id;
+
+                        await _roleManager.AddClaimAsync(role, currentPermission.ToClaim());
+                    }
+                }
+            }
+
+            return Ok();
+        }
+
 
 		[HttpGet]
         public IActionResult Get(string id)
