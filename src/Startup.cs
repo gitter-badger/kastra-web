@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Kastra.Core;
 using Kastra.Core.Dto;
 using Kastra.Web.Identity;
+using Kastra.Web.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -142,7 +143,10 @@ namespace Kastra.Web
 				app.UseCors("CorsPolicy");
 			}     
 
-            app.UseAuthentication();         
+            app.UseAuthentication();
+
+            // Count visits
+            app.UseMiddleware<VisitorCounterMiddleware>();
 
             app.UseMvc(routes =>
             {

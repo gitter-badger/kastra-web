@@ -2,13 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ReleaseVersion>0.9</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
+    <PackageVersion>0.9.0</PackageVersion>
+    <VersionPrefix>0.9.0</VersionPrefix>
+    <ReleaseVersion>0.9.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Kastra.Core" Version="0.8.10" />
+    <PackageReference Include="Kastra.Core" Version="0.8.12" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools">
@@ -44,6 +46,8 @@
     <Folder Include="Areas\Admin\Views\Module\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Models\Module\" />
+    <Folder Include="Areas\API\Models\Statistics\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
