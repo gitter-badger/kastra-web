@@ -1,4 +1,7 @@
-﻿using Kastra.Core.Business;
+﻿using System.Diagnostics;
+using System.Reflection;
+using Kastra.Core;
+using Kastra.Core.Business;
 using Kastra.Core.Dto;
 using Kastra.Core.Services;
 using Kastra.Web.Areas.API.Models.SiteConfiguration;
@@ -76,6 +79,25 @@ namespace Kastra.Web.API.Controllers
             applicationLifetime.StopApplication();
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets the application versions.
+        /// </summary>
+        /// <returns>The application versions.</returns>
+        public IActionResult GetApplicationVersions()
+        {
+            // Get application version
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string applicationVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                        .InformationalVersion;
+
+            // Get the Kastra core version
+            string kastraVersion = typeof(Configuration).Assembly
+                                        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                        .InformationalVersion;
+
+            return Json(new { ApplicationVersion = applicationVersion, CoreVersion = kastraVersion });
         }
     }
 }
