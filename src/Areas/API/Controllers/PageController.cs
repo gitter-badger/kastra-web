@@ -58,7 +58,7 @@ namespace Kastra.Web.API.Controllers
 
             _viewManager.SavePage(page);
 
-            return Ok();
+            return Ok(new { page.PageId });
         }
 
         [HttpDelete]

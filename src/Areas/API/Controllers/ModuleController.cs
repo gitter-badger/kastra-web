@@ -90,7 +90,7 @@ namespace Kastra.Web.Areas.API.Controllers
 
             #endregion
 
-            return Ok();
+            return Ok(new { module.ModuleId });
         }
 
         [HttpDelete]
