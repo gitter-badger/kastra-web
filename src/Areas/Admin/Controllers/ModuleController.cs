@@ -26,8 +26,8 @@ namespace Kastra.Web.Admin.Controllers
             _viewManager = viewManager;
         }
 
-        [Route("Admin/Module/Settings/mid/{moduleId}/mc/{moduleControl}/ma/{moduleAction?}")]
-        [Route("Admin/Module/Settings/{moduleId}/{moduleControl}/{moduleAction?}")]
+        [Route("[area]/[controller]/[action]/mid/{moduleId}/mc/{moduleControl}/ma/{moduleAction?}")]
+        [Route("[area]/[controller]/[action]/{moduleId}/{moduleControl}/{moduleAction?}")]
         public IActionResult Settings(int moduleId, string moduleControl, string moduleAction)
         {
             PageInfo page = null;
@@ -35,16 +35,16 @@ namespace Kastra.Web.Admin.Controllers
             ViewEngine viewEngine = null;
 
             // Get module
-            ModuleInfo module = _viewManager.GetModule(moduleId, true);
+            ModuleInfo module = _viewManager.GetModule(moduleId, true, true);
 
             if (module == null)
-                return RedirectToAction("Index", "AdminPage");
+                return RedirectToAction("Index", "Home");
 
             // Get page
             page = _viewManager.GetPage(module.PageId);
 
             if (page == null)
-                return RedirectToAction("Index", "AdminPage");
+                return RedirectToAction("Index", "Home");
 
             viewEngine = new ViewEngine(_cacheEngine);
             model.ModuleSettingsView = viewEngine.GetModuleDataByModuleId(page, module, moduleControl, moduleAction);
