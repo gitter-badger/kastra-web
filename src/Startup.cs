@@ -122,11 +122,12 @@ namespace Kastra.Web
         {
 			AppSettings appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            // Add log4net logs
+            loggerFactory.AddLog4Net("log4net.config", Configuration.GetSection("Log4net"));
 
             if (env.IsDevelopment())
             {
+                loggerFactory.AddDebug();
                 app.UseDeveloperExceptionPage();
             }
             else

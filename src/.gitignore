@@ -6,6 +6,7 @@
 #Kastra specific files
 *.dll
 appsettings.json
+Logs/
 
 # User-specific files
 .DS_Store
