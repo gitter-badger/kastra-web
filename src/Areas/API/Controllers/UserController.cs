@@ -55,14 +55,13 @@ namespace Kastra.Web.API.Controllers
             if(user == null)
             {
                 user = new ApplicationUser();
-                user.UserName = model.UserName;
+                user.UserName = model.Email;
                 user.Email = model.Email;
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
                 if(!result.Succeeded)
                 {
-                    //return new JsonResult(result.Errors) { StatusCode = (int)HttpStatusCode.BadRequest };
                     return BadRequest(result);
                 }
             }
