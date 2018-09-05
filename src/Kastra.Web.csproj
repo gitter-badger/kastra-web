@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Kastra.Core" Version="0.8.12" />
+    <PackageReference Include="Kastra.Core" Version="0.9.0" />
     <Reference Include="netstandard" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="2.2.4" />
   </ItemGroup>
@@ -60,6 +60,7 @@
     <Compile Remove="Identity\ApplicationRole.cs" />
     <Compile Remove="Identity\ApplicationUser.cs" />
     <Compile Remove="Controllers\TemplateController.cs" />
+    <Compile Remove="KastraTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Admin\Views\Module\Settings.cshtml" />
