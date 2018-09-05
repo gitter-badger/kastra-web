@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Kastra.Core;
+using Kastra.Core.Business;
 using Kastra.Core.Dto;
 using Kastra.Web.Identity;
 using Kastra.Web.Middlewares;
@@ -118,7 +119,7 @@ namespace Kastra.Web
 			}
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IViewManager viewManager)
         {
 			AppSettings appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
 
@@ -138,6 +139,8 @@ namespace Kastra.Web
             app.UseBrowserLink();
 
             app.UseStaticFiles();
+
+            app.UseModuleStaticFiles(viewManager, appSettings.Configuration.ModuleDirectoryPath);
 
 			if(appSettings.Cors.EnableCors)
 			{
