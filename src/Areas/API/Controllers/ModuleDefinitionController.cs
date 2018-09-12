@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Kastra.Core;
@@ -8,6 +9,7 @@ using Kastra.Core.Dto;
 using Kastra.Web.API.Models.ModuleDefinition;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Kastra.Web.API.Controllers
 {
@@ -18,14 +20,17 @@ namespace Kastra.Web.API.Controllers
         private readonly IModuleManager _moduleManager;
         private readonly ISecurityManager _securityManager;
         private readonly IViewManager _viewManager;
+        private readonly AppSettings _appSettings;
 
         public ModuleDefinitionController(IModuleManager moduleManager,
                                           ISecurityManager securityManager,
-                                          IViewManager viewManager)
+                                          IViewManager viewManager,
+                                          IOptions<AppSettings> appSettings)
         {
             _moduleManager = moduleManager;
             _securityManager = securityManager;
             _viewManager = viewManager;
+            _appSettings = appSettings.Value;
         }
 
         [HttpGet]
@@ -52,7 +57,7 @@ namespace Kastra.Web.API.Controllers
 
             foreach (Assembly assembly in KastraAssembliesContext.Instance.GetModuleAssemblies())
             {
-                moduleDefinition = modulesDefinitions.SingleOrDefault(m => assembly.Location.Contains(m.Path));
+                moduleDefinition = modulesDefinitions.SingleOrDefault(m => IsInFolder(assembly.Location, m.Path));
 
                 moduleModel = new ModuleInstallModel();
                 moduleModel.AssemblyName = assembly.GetName().Name;
@@ -166,6 +171,18 @@ namespace Kastra.Web.API.Controllers
 			model.Name = moduleDefinitionInfo.Name;
 				
             return model;
+        }
+
+        private bool IsInFolder(string assemblyPath, string moduleDefinitionFolder)
+        {
+
+            string moduleRootDirectory = Path.Combine(Directory.GetCurrentDirectory(), 
+                                                      _appSettings.Configuration.ModuleDirectoryPath, 
+                                                      moduleDefinitionFolder);
+            Uri moduleUri = new Uri(moduleRootDirectory);
+            Uri assemblyUri = new Uri(assemblyPath);
+
+            return (assemblyUri.LocalPath).Contains(moduleUri.LocalPath);
         }
 
         #endregion
