@@ -13,11 +13,11 @@
 
     <div class="sidebar">
         <div style="height:75px;"></div>
-        <a class="user-icon" asp-controller="Manage" asp-action="Index" asp-fragment="wrapper"><img alt="" src="/images/avatar.jpg" /></a>
+        <a class="user-icon" asp-controller="Manage" asp-action="Index"><img alt="" src="/images/avatar.jpg" /></a>
         <p>Hello @UserManager.GetUserName(User)!</p>
         <a href="/"><span class="ion-ios-home-outline"></span>Home</a>
-        <a asp-area="Admin" asp-controller="Manage" asp-action="Index" asp-fragment="wrapper"><span class="ion-ios-person-outline"></span>Mon compte</a>
-        <a href="/admin"><span class="ion-ios-monitor-outline"></span> Admnistration</a>
+        <a asp-controller="Manage" asp-action="Index"><span class="ion-ios-person-outline"></span>Mon compte</a>
+        <a asp="/Admin"><span class="ion-ios-monitor-outline"></span> Admnistration</a>
 
 
         <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
