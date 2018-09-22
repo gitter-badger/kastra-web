@@ -40,8 +40,15 @@ namespace Kastra.Web.API.Controllers
             model.Description = configuration.Description;
             model.HostUrl = configuration.HostUrl;
             model.CacheActivated = configuration.CacheActivated;
+            model.SmtpHost = configuration.SmtpHost;
+            model.SmtpPort = configuration.SmtpPort.ToString();
+            model.SmtpCredentialsUser = configuration.SmtpCredentialsUser;
+            model.SmtpCredentialsPassword = configuration.SmtpCredentialsPassword;
+            model.SmtpEnableSsl = configuration.SmtpEnableSsl;
+            model.EmailSender = configuration.EmailSender;
+            model.RequireConfirmedEmail = configuration.RequireConfirmedEmail;
 
-			return Json(model);
+            return Json(model);
 		}
 
         [HttpPost]
@@ -52,19 +59,27 @@ namespace Kastra.Web.API.Controllers
             conf.Description = model.Description;
             conf.HostUrl = model.HostUrl;
             conf.CacheActivated = model.CacheActivated;
+            conf.SmtpHost = model.SmtpHost;
+            conf.SmtpPort = int.Parse(model.SmtpPort);
+            conf.SmtpCredentialsUser = model.SmtpCredentialsUser;
+            conf.SmtpCredentialsPassword = model.SmtpCredentialsPassword;
+            conf.SmtpEnableSsl = model.SmtpEnableSsl;
+            conf.EmailSender = model.EmailSender;
+            conf.RequireConfirmedEmail = model.RequireConfirmedEmail;
 
             // Cache
             if (model.CacheActivated)
             {
                 _cacheEngine.EnableCache();
+                _cacheEngine.ClearSiteConfig();
             }
             else
             {
                 _cacheEngine.DisableCache();
-                _cacheEngine.ClearAllCache();
             }
 
             _parameterManager.SaveSiteConfiguration(conf);
+            _cacheEngine.ClearAllCache();
 
             return Ok();
         }

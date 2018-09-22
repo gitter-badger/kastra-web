@@ -57,6 +57,7 @@ namespace Kastra.Web.API.Controllers
                 user = new ApplicationUser();
                 user.UserName = model.Email;
                 user.Email = model.Email;
+                user.EmailConfirmed = true;
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 

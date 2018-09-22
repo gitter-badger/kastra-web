@@ -82,6 +82,9 @@ namespace Kastra.Web
             // Add caching support
             services.AddMemoryCache();
 
+            // Configure Kastra options with site configuration
+            services.ConfigureKastraOptions();
+
             // Add Mvc
             var mvcBuilder = services.AddMvc();
             mvcBuilder.AddApplicationParts();
@@ -136,11 +139,20 @@ namespace Kastra.Web
                 app.UseExceptionHandler("/Page/Error");
             }
 
+            // Update database
+            if(appSettings.Configuration.EnableDatabaseUpdate)
+            {
+                UpdateDatabase(app);
+            }
+
             app.UseBrowserLink();
 
             app.UseStaticFiles();
 
-            app.UseModuleStaticFiles(viewManager, appSettings.Configuration.ModuleDirectoryPath);
+            app.UseModuleStaticFiles(
+                viewManager, 
+                appSettings.Configuration.ModuleDirectoryPath,
+                $"/{Constants.SiteConfig.DefaultModuleResourcesPath}");
 
 			if(appSettings.Cors.EnableCors)
 			{
@@ -164,6 +176,21 @@ namespace Kastra.Web
 				                template: "{area:exists}/{*catchall}",
 				                defaults: new { controller = "Home", action = "Index" });
             });
+        }
+
+        /// <summary>
+        /// Updates the database.
+        /// </summary>
+        /// <param name="app">App.</param>
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

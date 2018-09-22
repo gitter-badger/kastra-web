@@ -9,6 +9,11 @@ using Microsoft.Extensions.Logging;
 using Kastra.Web.Models.Account;
 using Kastra.Web.Controllers;
 using Kastra.Core.Dto;
+using Kastra.Core.Services;
+using Kastra.Core.Business;
+using Kastra.Core.DTO;
+using System;
+using Microsoft.Net.Http.Headers;
 
 namespace Kastra.Controllers
 {
@@ -17,15 +22,21 @@ namespace Kastra.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IStatisticsManager _statisticsManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IStatisticsManager statisticsManager,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
+            _statisticsManager = statisticsManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -55,6 +66,18 @@ namespace Kastra.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+
+                    ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
+
+                    VisitorInfo visitor = new VisitorInfo();
+                    visitor.Id = Guid.NewGuid();
+                    visitor.LastVisitAt = DateTime.Now;
+                    visitor.UserAgent = Request.Headers[HeaderNames.UserAgent];
+                    visitor.IpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                    visitor.UserId = user.Id;
+
+                    _statisticsManager.SaveVisitor(visitor);
+
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -103,11 +126,12 @@ namespace Kastra.Controllers
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }

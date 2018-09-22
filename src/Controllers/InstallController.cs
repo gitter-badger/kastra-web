@@ -115,7 +115,7 @@ namespace Kastra.Controllers
                     moduleManager.InstallModules();
 
                     // Create host user
-                    ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
                     IdentityResult result = await userManager.CreateAsync(user, model.Password);
 
                     if (!result.Succeeded)
