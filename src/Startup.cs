@@ -168,7 +168,7 @@ namespace Kastra.Web
             {
 				routes.MapRoute(name: "areaRoute",
 				                template: "{area:exists}/{controller}/{action}/{id?}",
-                                defaults: new { controller = "Home", action = "Index" });
+                                defaults: new { controller = "Page", action = "Home" });
 				
                 routes.AddDefaultRoutes("Page", "Admin/Module");
 
