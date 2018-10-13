@@ -14,6 +14,7 @@ using Kastra.Core.Business;
 using Kastra.Core.DTO;
 using System;
 using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Localization;
 
 namespace Kastra.Controllers
 {
@@ -143,9 +144,8 @@ namespace Kastra.Controllers
         }
 
         //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: /Account/LogOff
+        [HttpGet]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -465,7 +465,7 @@ namespace Kastra.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(PageController.Index), "Home");
+                return Redirect(Url.Content("~/"));
             }
         }
 

@@ -1,71 +1,39 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>@ViewBag.Title</title>
-		<meta charset="utf-8" />
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    @if (!String.IsNullOrEmpty(ViewBag.MetaDescription))
+    {
+        <meta name="description" content="@ViewBag.MetaDescription" />
+    }
+    @if (!String.IsNullOrEmpty(ViewBag.MetaKeywords))
+    {
+        <meta name="keywords" content="@ViewBag.MetaKeywords" />
+    }
+    @if (!String.IsNullOrEmpty(ViewBag.MetaRobot))
+    {
+        <meta name="robots" content="@ViewBag.MetaRobot" />
+    }
 
-		@if(!String.IsNullOrEmpty(ViewBag.MetaDescription))
-        {
-            <meta name="description" content="@ViewBag.MetaDescription" />
-        }
-		@if(!String.IsNullOrEmpty(ViewBag.MetaKeywords))
-        {
-		    <meta name="keywords" content="@ViewBag.MetaKeywords" />
-        }
-		@if(!String.IsNullOrEmpty(ViewBag.MetaRobot))
-		{
-		    <meta name="robots" content="@ViewBag.MetaRobot" />
-		}
-		
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="~/css/main.css" />
-		<link rel="stylesheet" href="~/css/sidebar.css" />
-		<link rel="stylesheet" href="~/css/ionicons.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
 
-		<!-- Scripts -->
-		<script src="/js/jquery.min.js"></script>
-		<script src="/js/jquery.scrollex.min.js"></script>
-		<script src="/js/plugins/dynamicsjs/dynamics.min.js"></script>
-		<script src="/js/skel.min.js"></script>
-		<script src="/js/util.js"></script>
-		<script src="/js/main.js"></script>
-		
-		@RenderSection("scripts", required: false)
-	</head>
+    <!-- Scripts -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/plugins/dynamicsjs/dynamics.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</head>
 	<body>
 
         <!-- Header -->
-        <header id="header" class="alt">
-            <!--<div class="logo"><a asp-controller="home" asp-action="index">Hielo <span>by TEMPLATED</span></a></div>-->
-            <!--<a href="#menu">Menu</a>-->
-            @await Html.PartialAsync("_LoginPartial")
-        </header>
+        @await Html.PartialAsync("_LoginPartial")
 
-        <!-- One -->
-        <section id="One" class="wrapper style3">
-            <div class="inner">
-                <header class="align-center">
-                    <p>AN OPEN, FREE AND CROSS-PLATFORM CMS</p>
-                    <h2>Kastra</h2>
-                </header>
-            </div>
-        </section>
-		
-		<div id="kastra-content">
-			@RenderSection("KastraMessage", false)
-		</div>
-        
-		<!-- Wrapper -->
+		<!-- Content -->
 		@RenderBody()
 
-		<!-- Footer -->
-        <footer id="footer">
-            <div class="copyright">
-                &copy; 2017 - 2018 Kastra. All rights reserved.
-            </div>
-            <div class="copyright">
-                Theme Hielo by <a href="https://templated.co/"><span>TEMPLATED</span></a>
-            </div>
-        </footer>
 	</body>
 </html>

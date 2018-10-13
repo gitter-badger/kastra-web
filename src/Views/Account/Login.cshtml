@@ -8,55 +8,45 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
+    Layout = "_StaticLayout";
     ViewData["Title"] = "Log in";
-	ViewData["ReturnUrl"] = "/page/home";
+    ViewData["ReturnUrl"] = "/page/home";
 }
 
-<section id="two" class="wrapper style2">
-	<div class="inner">
-	    <div class="box">
-	        <div class="content">
-				<header class="align-center">
-	                <h2>@ViewData["Title"].</h2>
-	            </header>			
-	            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-	                <h4>Use a local account to log in.</h4>
-	                <hr />
-	                <div asp-validation-summary="All" class="text-danger"></div>
-	                <div class="field">
-	                    <label asp-for="Email"></label>
-	                    <div>
-	                        <input asp-for="Email" />
-	                        <span asp-validation-for="Email"></span>
-	                    </div>
-	                </div>
-	                <div class="field">
-	                    <label asp-for="Password"></label>
-	                    <div>
-	                        <input asp-for="Password" />
-	                        <span asp-validation-for="Password"></span>
-	                    </div>
-	                </div>
-	                <div>
-                        <div class="checkbox">
-							<input asp-for="RememberMe" />
-                            <label asp-for="RememberMe">   
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
-                        </div>
-                    </div>
-	                <div>
-                        <button type="submit" class="btn btn-default">Log in</button>
-						<div>
-						    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user ?</a>
-                            <a asp-action="ForgotPassword">Forgot your password ?</a>
-						</div>
-	                </div>
-	            </form>
-            </div>
-        </div>
+<header class="title">
+    <h2>@ViewData["Title"].</h2>
+</header>
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>Use a local account to log in.</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="field">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
     </div>
-</section>
+    <div class="field">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div class="field">
+        <label class="field-checkbox" asp-for="RememberMe">
+            @Html.DisplayNameFor(m => m.RememberMe)
+            <input asp-for="RememberMe" />
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div class="actions">
+        <button type="submit" class="button button-primary">Log in</button>
+    </div>
+
+    <div class="actions-secondary">
+        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user ?</a>
+        <a asp-action="ForgotPassword">Forgot your password ?</a>
+    </div>
+</form>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

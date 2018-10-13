@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Kastra.Core;
 using Kastra.Core.Business;
 using Kastra.Core.Dto;
+using Kastra.Core.Services;
 using Kastra.Web.Identity;
 using Kastra.Web.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace Kastra.Web
@@ -84,6 +86,13 @@ namespace Kastra.Web
 
             // Configure Kastra options with site configuration
             services.ConfigureKastraOptions();
+
+            // Localization
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
+            services.AddTransient(typeof(IStringLocalizer<>), typeof(JsonStringLocalizer<>));
 
             // Add Mvc
             var mvcBuilder = services.AddMvc();

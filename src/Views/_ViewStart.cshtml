@@ -1,15 +1,3 @@
 ﻿@{
-    var action = this.ViewContext.RouteData.Values["action"].ToString();
-    string layout = "";
-
-    if (action == null || (ViewData.ContainsKey("IsHome") && ViewBag.IsHome))
-    {
-        layout = "_LayoutHome";
-    }
-    else
-    {
-        layout = "_Layout";
-    }
-
-    Layout = layout;
+    Layout = "_Layout";
 }

@@ -50,11 +50,13 @@
     <Folder Include="Areas\Admin\Models\Module\" />
     <Folder Include="Areas\API\Models\Statistics\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
     <Content Remove="Areas\Admin\Views\Module\Settings.cshtml" />
     <Content Remove="Areas\Admin\Views\Shared\_ModuleLayout.cshtml" />
+    <Content Remove="Views\Shared\_LayoutHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Identity\ApplicationRole.cs" />

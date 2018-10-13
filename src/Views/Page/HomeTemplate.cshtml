@@ -11,7 +11,7 @@
 <div id="page-content" class="main-container">
 
     <!-- Slider -->
-    <div class="header-container">
+    <div class="parallax-container">
         <nav id="header-navigation">
             @if (SignInManager.IsSignedIn(User))
             {
@@ -37,10 +37,16 @@
                 <a asp-controller="Account" asp-action="Login"><span>Log in</span></a>
             }
         </nav>
-        <header id="header">
-            <h1>Kastra</h1>
-            <p>AN OPEN, FREE AND CROSS-PLATFORM CMS</p>
-        </header>
+        <section id="slider">
+            <article>
+                <header>
+
+                    <h1>Kastra</h1>
+                    <p>AN OPEN, FREE AND CROSS-PLATFORM CMS</p>
+                    <div><a class="button" href="/page/documentation">Get started</a></div>
+                </header>
+            </article>
+        </section>
     </div>
 
     <div class="content-container">
@@ -59,9 +65,8 @@
 </div>
 <script type="text/javascript">
     let page = document.getElementById("page-content");
-    let header = document.getElementsByClassName("header-container")[0] || {};
     page.onscroll = function() {
-        if (page.scrollTop > header.offsetHeight) {
+        if (page.scrollTop > window.innerHeight) {
             document.getElementById("navbar").style.top = "0px";
         } else {
             document.getElementById("navbar").style.top = "-50px";
