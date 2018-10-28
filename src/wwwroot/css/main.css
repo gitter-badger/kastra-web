@@ -29,8 +29,12 @@ a {
 }
 
 .title {
-    text-align: center;
-    margin: 1.5rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+}
+
+.subtitle {
+    margin: 1rem 0 3rem 0;
 }
 
 .button {
@@ -70,7 +74,7 @@ button.button:hover {
 }
 
 .field {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 2rem 0;
 }
 
 .field label {
@@ -94,7 +98,9 @@ button.button:hover {
 }
 
 .field input[type="text"]:focus, .field input[type="password"]:focus, .field input[type="email"]:focus {
-    border: 2px solid #1997c6;
+    border: 1px solid #1997c6;
+    box-shadow: 0 0 0 1px #1997c6;
+    border-top: 0;
 }
 
 .field-checkbox, .field-radio {
@@ -222,7 +228,7 @@ button.button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-bottom: 3rem;
+    padding: 3rem 0;
 }
 
 #header h1 {
@@ -426,6 +432,7 @@ button.button:hover {
 
 .content {
     max-width: 750px;
+    min-width: 40%;
     margin: 0 auto;
     padding: 1rem 0;
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading.Tasks;
 using Kastra.Core;
@@ -22,6 +23,8 @@ namespace Kastra.Web
 {
     public class Startup
     {
+        private bool _isInstalled = false;
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -36,8 +39,15 @@ namespace Kastra.Web
 
             AppSettings appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
             services.Configure<AppSettings>(Configuration);
+            
+            #region Check database
 
-            if (!String.IsNullOrEmpty(Configuration.GetConnectionString("DefaultConnection")))
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            _isInstalled = !String.IsNullOrEmpty(connectionString) && HasTables(connectionString);
+
+            #endregion
+
+            if (!String.IsNullOrEmpty(connectionString))
             {
                 // Add framework services.
                 services.AddDbContext<ApplicationDbContext>(options =>
@@ -85,7 +95,10 @@ namespace Kastra.Web
             services.AddMemoryCache();
 
             // Configure Kastra options with site configuration
-            services.ConfigureKastraOptions();
+            if(_isInstalled)
+            {
+                services.ConfigureKastraOptions();
+            }
 
             // Localization
             services.AddLocalization(options =>
@@ -131,10 +144,10 @@ namespace Kastra.Web
 			}
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IViewManager viewManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
 			AppSettings appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
-
+            
             // Add log4net logs
             loggerFactory.AddLog4Net("log4net.config", Configuration.GetSection("Log4net"));
 
@@ -149,7 +162,7 @@ namespace Kastra.Web
             }
 
             // Update database
-            if(appSettings.Configuration.EnableDatabaseUpdate)
+            if(_isInstalled && appSettings.Configuration.EnableDatabaseUpdate)
             {
                 UpdateDatabase(app);
             }
@@ -158,10 +171,15 @@ namespace Kastra.Web
 
             app.UseStaticFiles();
 
-            app.UseModuleStaticFiles(
-                viewManager, 
-                appSettings.Configuration.ModuleDirectoryPath,
-                $"/{Constants.SiteConfig.DefaultModuleResourcesPath}");
+            if(_isInstalled)
+            {
+                //IViewManager viewManager = app.ApplicationServices.GetService(typeof(IViewManager)) as IViewManager;
+                IViewManager viewManager = serviceProvider.GetService<IViewManager>() as IViewManager;
+                app.UseModuleStaticFiles(
+                    viewManager, 
+                    appSettings.Configuration.ModuleDirectoryPath,
+                    $"/{Constants.SiteConfig.DefaultModuleResourcesPath}");
+            }
 
 			if(appSettings.Cors.EnableCors)
 			{
@@ -171,7 +189,10 @@ namespace Kastra.Web
             app.UseAuthentication();
 
             // Count visits
-            app.UseMiddleware<VisitorCounterMiddleware>();
+            if(_isInstalled)
+            {
+                app.UseMiddleware<VisitorCounterMiddleware>();
+            }
 
             app.UseMvc(routes =>
             {
@@ -200,6 +221,31 @@ namespace Kastra.Web
                     context.Database.Migrate();
                 }
             }
+        }
+        
+        /// <summary>
+        /// Check if database has already been installed
+        /// </summary>
+        /// <param name="connectionString">Connection string</param>
+        /// <returns></returns>
+        private static Boolean HasTables(String connectionString)
+        {
+            int numberTables = 0;
+
+            if (String.IsNullOrEmpty(connectionString))
+                return false;
+
+            string queryString = "SELECT Count(*) from sys.tables where name like 'Kastra%'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                numberTables = (int)command.ExecuteScalar();
+            }
+
+            return (numberTables > 0);
         }
     }
 }

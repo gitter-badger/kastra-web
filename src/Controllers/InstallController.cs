@@ -56,7 +56,7 @@ namespace Kastra.Controllers
             try
             {
                 if (!DatabaseExists(connectionString))
-                    return BadRequest();
+                    return BadRequest("Cannot connect to the database");
 
                 SaveConnectionString(connectionString);
             }
@@ -88,17 +88,12 @@ namespace Kastra.Controllers
                     // Create identity tables
                     applicationDbContext.Database.Migrate();
 
-                    // Create kastra tables
-                    applicationManager.Install();
+                    // Create host user
+                    ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
+                    IdentityResult result = await userManager.CreateAsync(user, model.Password);
 
-                    // Install default template
-                    applicationManager.InstallDefaultTemplate();
-
-                    // Install default page
-                    applicationManager.InstallDefaultPage();
-
-                    // Install default permissions
-                    applicationManager.InstallDefaultPermissions();
+                    if (!result.Succeeded)
+                        return BadRequest(result.Errors);
 
                     // Install roles
                     ApplicationRole role = new ApplicationRole();
@@ -111,18 +106,23 @@ namespace Kastra.Controllers
                     roleClaim.RoleId = role.Id;
                     await roleManager.AddClaimAsync(role, roleClaim.ToClaim());
 
-                    // Install modules
-                    moduleManager.InstallModules();
-
-                    // Create host user
-                    ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
-                    IdentityResult result = await userManager.CreateAsync(user, model.Password);
-
-                    if (!result.Succeeded)
-                        return BadRequest();
-
                     // Add user to admin role
                     await userManager.AddToRoleAsync(user, role.Name);
+
+                    // Create kastra tables
+                    applicationManager.Install();
+
+                    // Install default template
+                    applicationManager.InstallDefaultTemplate();
+
+                    // Install default page
+                    applicationManager.InstallDefaultPage();
+
+                    // Install default permissions
+                    applicationManager.InstallDefaultPermissions();
+
+                    // Install modules
+                    moduleManager.InstallModules();
                 }
                 catch(Exception ex)
                 {
@@ -151,6 +151,24 @@ namespace Kastra.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public IActionResult CheckDatabaseTables()
+        {
+            String connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            try
+            {
+                if (DatabaseExists(connectionString, true))
+                    return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);   
+            }
+
+            return NotFound();
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -168,7 +186,7 @@ namespace Kastra.Controllers
             if (String.IsNullOrEmpty(connectionString))
                 return false;
 
-            string queryString = "SELECT Count(*) from sys.columns where name like 'Kastra%'";
+            string queryString = "SELECT Count(*) from sys.tables where name like 'Kastra%'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
