@@ -333,6 +333,10 @@ namespace Kastra.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
             }
+
+            // Update user
+            user.DateModified = DateTime.UtcNow;
+
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {

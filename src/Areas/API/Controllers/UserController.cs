@@ -69,6 +69,7 @@ namespace Kastra.Web.API.Controllers
             else {
                 user.UserName = model.UserName;
                 user.Email = model.Email;
+                user.DateModified = DateTime.UtcNow;
 
                 await _userManager.UpdateAsync(user);
             }
