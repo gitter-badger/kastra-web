@@ -6,9 +6,13 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var themeName = ViewBag.Theme;
+}
+
 <div id="navbar">
     <div class="navbar-left">
-        <img class="logo" src="/images/logo.svg" alt="" />
+        <img class="logo" src="@Url.Content($"~/themes/{themeName}/images/logo.svg")" alt="" />
     </div>
     <div class="navbar-right">
         @if (SignInManager.IsSignedIn(User))

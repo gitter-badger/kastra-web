@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using Kastra.Core;
 using Kastra.Core.Business;
@@ -17,11 +19,13 @@ namespace Kastra.Web.API.Controllers
     {
         private readonly CacheEngine _cacheEngine;
 		private readonly IParameterManager _parameterManager;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public SiteConfigurationController(CacheEngine cacheEngine, IParameterManager parametermanager)
+        public SiteConfigurationController(CacheEngine cacheEngine, IParameterManager parametermanager, IHostingEnvironment hostingEnvironment)
 		{
             _cacheEngine = cacheEngine;
 			_parameterManager = parametermanager;
+            _hostingEnvironment = hostingEnvironment;
 		}
 
 		[HttpGet]
@@ -35,6 +39,10 @@ namespace Kastra.Web.API.Controllers
 				return NotFound();
 			}
 
+            // Get themes list
+            DirectoryInfo themeDirectory = new DirectoryInfo(Path.Combine(_hostingEnvironment.WebRootPath, "themes"));
+            DirectoryInfo[] themes = themeDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
+
             model = new SiteConfigurationModel();
             model.Title = configuration.Title;
             model.Description = configuration.Description;
@@ -47,6 +55,8 @@ namespace Kastra.Web.API.Controllers
             model.SmtpEnableSsl = configuration.SmtpEnableSsl;
             model.EmailSender = configuration.EmailSender;
             model.RequireConfirmedEmail = configuration.RequireConfirmedEmail;
+            model.Theme = configuration.Theme;
+            model.ThemeList = themes?.Select(t => t.Name)?.ToArray() ?? new string[] { Constants.SiteConfig.DefaultTheme };
 
             return Json(model);
 		}
@@ -66,6 +76,7 @@ namespace Kastra.Web.API.Controllers
             conf.SmtpEnableSsl = model.SmtpEnableSsl;
             conf.EmailSender = model.EmailSender;
             conf.RequireConfirmedEmail = model.RequireConfirmedEmail;
+            conf.Theme = model.Theme;
 
             // Cache
             if (model.CacheActivated)

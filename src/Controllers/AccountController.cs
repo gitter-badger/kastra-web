@@ -15,10 +15,12 @@ using Kastra.Core.DTO;
 using System;
 using Microsoft.Net.Http.Headers;
 using Microsoft.Extensions.Localization;
+using Kastra.Web.Filters;
 
 namespace Kastra.Controllers
 {
     [Authorize]
+    [SiteConfiguration]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
