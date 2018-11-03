@@ -56,7 +56,7 @@ namespace Kastra.Web.API.Controllers
             model.EmailSender = configuration.EmailSender;
             model.RequireConfirmedEmail = configuration.RequireConfirmedEmail;
             model.Theme = configuration.Theme;
-            model.ThemeList = themes?.Select(t => t.Name)?.ToArray() ?? new string[] { Constants.SiteConfig.DefaultTheme };
+            model.ThemeList = themes?.Select(t => t.Name)?.OrderBy(t => t)?.ToArray() ?? new string[] { Constants.SiteConfig.DefaultTheme };
 
             return Json(model);
 		}
