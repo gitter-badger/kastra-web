@@ -6,6 +6,7 @@
     <PackageVersion>0.9.7</PackageVersion>
     <VersionPrefix>0.9.7</VersionPrefix>
     <ReleaseVersion>0.9.7</ReleaseVersion>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +41,7 @@
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\Admin\Views\Home\" />
+    <Folder Include="Areas\Admin\Views\Module\" />
     <Folder Include="Areas\Admin\wwwroot\" />
     <Folder Include="Areas\API\Models\Template\" />
     <Folder Include="Areas\API\Models\ModuleDefinition\" />
@@ -51,21 +53,5 @@
     <Folder Include="Areas\API\Models\Statistics\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
-    <Content Remove="Areas\Admin\Views\Module\Settings.cshtml" />
-    <Content Remove="Areas\Admin\Views\Shared\_ModuleLayout.cshtml" />
-    <Content Remove="Views\Shared\_LayoutHome.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Identity\ApplicationRole.cs" />
-    <Compile Remove="Identity\ApplicationUser.cs" />
-    <Compile Remove="Controllers\TemplateController.cs" />
-    <Compile Remove="KastraTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Areas\Admin\Views\Module\Settings.cshtml" />
-    <None Include="Areas\Admin\Views\Shared\_ModuleLayout.cshtml" />
   </ItemGroup>
 </Project>
