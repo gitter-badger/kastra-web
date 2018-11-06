@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 @{
     var themeName = ViewBag.Theme;
@@ -17,8 +16,6 @@
     <div class="navbar-right">
         @if (SignInManager.IsSignedIn(User))
         {
-            <span>Hello @UserManager.GetUserName(User)!</span>
-            <span>&#8239;</span>
             <a href="/"><span>Home</span></a>
             <span>&#8239;</span>
             <a asp-controller="Manage" asp-action="Index">Mon compte</a>
