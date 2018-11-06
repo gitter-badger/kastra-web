@@ -417,6 +417,8 @@ button.button:hover {
     transform: translateZ(-1px) scale(2);
     z-index: -1;
     background-image: url("../images/slide03.jpg");
+    margin-left: -3px;
+    background-size: cover;
 }
 
 .content-container {
