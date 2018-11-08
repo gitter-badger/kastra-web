@@ -63,12 +63,12 @@ button.button {
     font-size: 0.8rem;
 }
 
-button.button.button-primary {
+.button.button-primary {
     background-color: #1997c6;
     color: #FFF;
 }
 
-button.button:hover {
+.button:hover {
     background-color: #FFF;
     color: #000;
 }
@@ -159,6 +159,11 @@ button.button:hover {
 
 .text-danger {
     color: #F00;
+}
+
+.text-success {
+    font-weight: 500;
+    padding: 1rem 0;
 }
 
 .validation-summary-errors {
