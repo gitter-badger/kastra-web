@@ -33,6 +33,7 @@ namespace Kastra.Web.API.Controllers
         }
 
 		[HttpPost]
+        [ValidateAntiForgeryToken]
 		public IActionResult Add([FromBody]string name)
 		{
 			// Get permission
@@ -50,6 +51,7 @@ namespace Kastra.Web.API.Controllers
 		}
 
 		[HttpDelete]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete([FromBody]int id)
         {
             if (_securityManager.GetPermissionById(id) == null)

@@ -24,6 +24,7 @@ namespace Kastra.Web.API.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
         public IActionResult GetGlobalStats()
         {
             GlobalStatsModel model = new GlobalStatsModel();
@@ -43,6 +44,7 @@ namespace Kastra.Web.API.Controllers
             return Json(model);
         }
 
+        [HttpGet]
         public IActionResult GetVisitorsByDay()
         {
             int nbVisits = 0;
@@ -79,6 +81,7 @@ namespace Kastra.Web.API.Controllers
             return Json(model);
         }
 
+        [HttpGet]
         public IActionResult GetVisits(int page = 0)
         {
             int pageSize = 5;
@@ -104,6 +107,7 @@ namespace Kastra.Web.API.Controllers
             return Json(model);
         }
 
+        [HttpGet]
         public IActionResult GetRecentUsers()
         {
             UserModel userModel = null;

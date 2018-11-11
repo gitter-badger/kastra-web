@@ -62,6 +62,7 @@ namespace Kastra.Web.API.Controllers
 		}
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update([FromBody]SiteConfigurationModel model)
         {
             SiteConfigurationInfo conf = new SiteConfigurationInfo();
@@ -100,6 +101,7 @@ namespace Kastra.Web.API.Controllers
         /// </summary>
         /// <returns></returns>
         /// <param name="applicationLifetime">Application lifetime.</param>
+        [HttpGet]
         public IActionResult Restart([FromServices] IApplicationLifetime applicationLifetime)
         {
             applicationLifetime.StopApplication();
@@ -111,6 +113,7 @@ namespace Kastra.Web.API.Controllers
         /// Gets the application versions.
         /// </summary>
         /// <returns>The application versions.</returns>
+        [HttpGet]
         public IActionResult GetApplicationVersions()
         {
             // Get application version

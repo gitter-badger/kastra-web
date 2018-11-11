@@ -45,6 +45,7 @@ namespace Kastra.Web.API.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update([FromBody]PageModel model)
         {
             PageInfo page = new PageInfo();
@@ -62,6 +63,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpDelete]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete([FromBody]int id)
         {
             if (_viewManager.GetPage(id) == null)

@@ -47,6 +47,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromBody]UserModel model)
         {
             // Save user
@@ -120,6 +121,7 @@ namespace Kastra.Web.API.Controllers
 		}
 
         [HttpDelete]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromBody]string id)
         {
             ApplicationUser user = _userManager.Users.SingleOrDefault(u => u.Id == id);
