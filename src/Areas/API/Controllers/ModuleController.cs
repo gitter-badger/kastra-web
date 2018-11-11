@@ -64,6 +64,24 @@ namespace Kastra.Web.Areas.API.Controllers
 
             _viewManager.SaveModule(module);
 
+            // Handle static module
+            if(model.IsStatic)
+            {
+                PlaceInfo place = _viewManager.GetPlace(model.PlaceId);
+                place.ModuleId = module.ModuleId;
+                _viewManager.SavePlace(place);
+            }
+            else if (model.Id > 0)
+            {
+                PlaceInfo place = _viewManager.GetPlace(model.PlaceId);
+
+                if(place.ModuleId == module.ModuleId)
+                {
+                    place.ModuleId = null;
+                    _viewManager.SavePlace(place);
+                }
+            }
+
             #region Permissions
 
             ModulePermissionInfo modulePermission = null;
@@ -120,7 +138,8 @@ namespace Kastra.Web.Areas.API.Controllers
             model.PlaceId = moduleInfo.PlaceId;
             model.DefinitionId = moduleInfo.ModuleDefId;
 			model.Permissions = moduleInfo.ModulePermissions.Select(p => p.PermissionId).ToArray();
-
+            model.IsStatic = moduleInfo?.Place?.ModuleId != null;
+            
             return model;
         }
 

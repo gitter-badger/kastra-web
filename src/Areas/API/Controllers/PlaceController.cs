@@ -36,7 +36,8 @@ namespace Kastra.Web.API.Controllers
 
 				places = places
 					.Where(p => p.PageTemplateId == page.PageTemplateId 
-					       && !p.Modules.Any(m => m.PageId == page.PageId))
+					       && !p.Modules.Any(m => m.PageId == page.PageId) 
+                           && p.ModuleId == null)
 					.ToList();
 			}
 
