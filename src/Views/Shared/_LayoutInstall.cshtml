@@ -1,3 +1,11 @@
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -11,6 +19,7 @@
 <body>
     <!-- Header -->
     <div id="page-content" class="main-container">
+
         <!-- Slider -->
         <div class="header-container">
             <header id="header">
@@ -20,6 +29,7 @@
         </div>
         <div class="content-container">
             <div class="content">
+                <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
                 <!-- Content -->
                 @RenderBody()
             </div>
