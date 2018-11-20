@@ -12,6 +12,7 @@ namespace Kastra.Web.API.Models.Module
         public int PlaceId { get; set; }
         public string PageName { get; set; }
         public bool IsStatic { get; set; }
+        public bool IsDisabled { get; set; }
 		public IList<int> Permissions { get; set; }
     }
 }

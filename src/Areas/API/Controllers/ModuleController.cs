@@ -62,6 +62,7 @@ namespace Kastra.Web.Areas.API.Controllers
             module.PageId = model.PageId;
             module.PlaceId = model.PlaceId;
             module.Name = model.Name;
+            module.IsDisabled = model.IsDisabled;
 
             _viewManager.SaveModule(module);
 
@@ -141,6 +142,7 @@ namespace Kastra.Web.Areas.API.Controllers
             model.DefinitionId = moduleInfo.ModuleDefId;
 			model.Permissions = moduleInfo.ModulePermissions.Select(p => p.PermissionId).ToArray();
             model.IsStatic = moduleInfo?.Place?.ModuleId != null;
+            model.IsDisabled = moduleInfo.IsDisabled;
             
             return model;
         }
