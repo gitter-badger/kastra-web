@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Kastra.Core;
 using Kastra.Core.Business;
 using Kastra.Core.Dto;
@@ -104,6 +107,7 @@ namespace Kastra.Web.API.Controllers
         [HttpGet]
         public IActionResult Restart([FromServices] IApplicationLifetime applicationLifetime)
         {
+            throw new Exception("");
             applicationLifetime.StopApplication();
 
             return Ok();
@@ -126,7 +130,23 @@ namespace Kastra.Web.API.Controllers
                                         .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                                         .InformationalVersion;
 
-            return Json(new { ApplicationVersion = applicationVersion, CoreVersion = kastraVersion });
+            // Get the dotnet core version
+            string dotnetCoreVersion = Assembly.GetEntryAssembly()?
+                                    .GetCustomAttribute<TargetFrameworkAttribute>()?
+                                    .FrameworkName;
+
+            // Get the OS
+            string osPlatform = RuntimeInformation.OSDescription;
+
+            var stats = new
+            {
+                ApplicationVersion = applicationVersion, 
+                CoreVersion = kastraVersion,
+                OsPlatform = osPlatform,
+                AspDotnetVersion = dotnetCoreVersion
+            };
+
+            return Json(stats);
         }
     }
 }
