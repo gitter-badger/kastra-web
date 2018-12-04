@@ -107,7 +107,6 @@ namespace Kastra.Web.API.Controllers
         [HttpGet]
         public IActionResult Restart([FromServices] IApplicationLifetime applicationLifetime)
         {
-            throw new Exception("");
             applicationLifetime.StopApplication();
 
             return Ok();
