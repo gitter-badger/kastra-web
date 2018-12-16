@@ -65,7 +65,7 @@ namespace Kastra.Web.API.Controllers
 		}
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Update([FromBody]SiteConfigurationModel model)
         {
             SiteConfigurationInfo conf = new SiteConfigurationInfo();

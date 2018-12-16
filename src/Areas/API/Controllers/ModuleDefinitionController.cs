@@ -72,7 +72,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Install([FromBody] string assemblyName)
         {
             Assembly assembly = null;
@@ -98,7 +98,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Uninstall([FromBody] ModuleDefinitionModel model)
         {
             Assembly assembly = null;

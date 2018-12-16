@@ -49,7 +49,7 @@ namespace Kastra.Web.Areas.API.Controllers
 		}
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Update([FromBody]ModuleModel model)
         {
             if (!ModelState.IsValid)
@@ -114,7 +114,7 @@ namespace Kastra.Web.Areas.API.Controllers
         }
 
         [HttpDelete]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Delete([FromBody]int id)
         {
             if (_viewManager.GetModule(id) == null)

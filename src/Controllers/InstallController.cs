@@ -43,7 +43,7 @@ namespace Kastra.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Database([FromBody] DatabaseViewModel databaseForm, [FromServices] IApplicationLifetime applicationLifetime)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -73,7 +73,7 @@ namespace Kastra.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Account([FromBody] AccountViewModel model, [FromServices] ApplicationDbContext applicationDbContext,
                 [FromServices] IApplicationManager applicationManager, [FromServices] IModuleManager moduleManager,
                 [FromServices] UserManager<ApplicationUser> userManager, [FromServices] RoleManager<ApplicationRole> roleManager, [FromServices] SignInManager<ApplicationUser> signInManager)

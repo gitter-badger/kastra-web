@@ -41,7 +41,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Update([FromBody]RoleModel model)
         {
             bool createMode = false;
@@ -116,7 +116,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpDelete]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Delete([FromBody]string id)
         {
             ApplicationRole role = _roleManager.Roles.SingleOrDefault(r => r.Id == id);
