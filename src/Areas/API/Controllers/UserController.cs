@@ -4,12 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using Kastra.Core.Business;
 using Kastra.Core.Dto;
+using Kastra.Core.DTO;
 using Kastra.Web.API.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace Kastra.Web.API.Controllers
@@ -20,16 +24,25 @@ namespace Kastra.Web.API.Controllers
     {
         #region Private members
 
+        private readonly ILogger _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IStatisticsManager _statisticsManager;
 
         #endregion
 
         public UserController(UserManager<ApplicationUser> userManager, 
-                              RoleManager<ApplicationRole> roleManager)
+                              RoleManager<ApplicationRole> roleManager,
+                              IStatisticsManager statisticsManager,
+                              ILoggerFactory loggerFactory,
+                              SignInManager<ApplicationUser> signInManager)
         {
+            _logger = loggerFactory.CreateLogger<UserController>();
             _userManager = userManager;
             _roleManager = roleManager;
+            _statisticsManager = statisticsManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -47,7 +60,7 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Update([FromBody]UserModel model)
         {
             // Save user
@@ -121,7 +134,7 @@ namespace Kastra.Web.API.Controllers
 		}
 
         [HttpDelete]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Delete([FromBody]string id)
         {
             ApplicationUser user = _userManager.Users.SingleOrDefault(u => u.Id == id);
@@ -134,6 +147,32 @@ namespace Kastra.Web.API.Controllers
             await _userManager.DeleteAsync(user);
 
             return Ok();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(1, "User logged in.");
+
+                ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
+
+                VisitorInfo visitor = new VisitorInfo();
+                visitor.Id = Guid.NewGuid();
+                visitor.LastVisitAt = DateTime.Now;
+                visitor.UserAgent = Request.Headers[HeaderNames.UserAgent];
+                visitor.IpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                visitor.UserId = user.Id;
+
+                _statisticsManager.SaveVisitor(visitor);
+
+                return Ok();
+            }
+
+            return Unauthorized();
         }
 
         #region Private methods
