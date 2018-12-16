@@ -540,3 +540,15 @@ button.button:hover {
 .loader-component .message {
     text-transform: uppercase;
 }
+
+/* ---------------------------------------------------
+    COOKIE CONSENT
+----------------------------------------------------- */
+.cookie-consent {
+    position: fixed;
+    bottom: 0;
+}
+
+.cookie-consent.hidden {
+    display: none;
+}

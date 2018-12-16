@@ -545,3 +545,17 @@ button.button {
 .loader-component .message {
     text-transform: uppercase;
 }
+
+/* ---------------------------------------------------
+    COOKIE CONSENT
+----------------------------------------------------- */
+.cookie-consent {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    background-color: #FFF;
+}
+
+.cookie-consent.hidden {
+    display: none;
+}

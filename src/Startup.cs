@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,8 +59,19 @@ namespace Kastra.Web
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
+                services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
 				services.ConfigureApplicationCookie(options =>
                 {
+                    if (appSettings.Configuration.DevelopmentMode)
+                    {
+                        options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                        options.Cookie.SameSite = SameSiteMode.None;
+                    }
 					options.Events =
                         new CookieAuthenticationEvents
                         {
@@ -192,12 +204,33 @@ namespace Kastra.Web
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
+            if (appSettings.Configuration.DevelopmentMode)
+            {
+                CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
+                {
+                    Secure = CookieSecurePolicy.None,
+                    MinimumSameSitePolicy = SameSiteMode.None
+                };
+
+                app.UseCookiePolicy(cookiePolicyOptions);
+            }
+            else
+            {
+                app.UseCookiePolicy();
+            }
+
             app.UseAuthentication();
 
             // Count visits
             if(_isInstalled)
             {
                 app.UseMiddleware<VisitorCounterMiddleware>();
+            }
+            
+            // Add antiforgery validation
+            if (!appSettings.Configuration.DevelopmentMode)
+            {
+                app.UseMiddleware<AntiForgeryTokenMiddleware>();
             }
 
             app.UseMvc(routes =>
@@ -211,7 +244,7 @@ namespace Kastra.Web
 				routes.MapRoute(name: "adminRoute",
 				                template: "{area:exists}/{*catchall}",
 				                defaults: new { controller = "Home", action = "Index" });
-            });
+            });  
         }
 
         /// <summary>
