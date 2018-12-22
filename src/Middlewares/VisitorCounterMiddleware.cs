@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Kastra.Core.Business;
 using Kastra.Core.DTO;
@@ -19,7 +20,7 @@ namespace Kastra.Web.Middlewares
         public async Task InvokeAsync(HttpContext context, IStatisticsManager statisticsManager)
         {
             string visitorId = context.Request.Cookies["VisitorId"];
-
+            
             if (visitorId == null)
             {
                 VisitorInfo visitor = new VisitorInfo();
@@ -27,6 +28,7 @@ namespace Kastra.Web.Middlewares
                 visitor.LastVisitAt = DateTime.Now;
                 visitor.UserAgent = context.Request.Headers[HeaderNames.UserAgent];
                 visitor.IpAddress = context.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                visitor.UserId = context.Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 // Save in database
                 statisticsManager.SaveVisitor(visitor);

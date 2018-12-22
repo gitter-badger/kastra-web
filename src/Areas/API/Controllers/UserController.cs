@@ -160,15 +160,6 @@ namespace Kastra.Web.API.Controllers
 
                 ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
 
-                VisitorInfo visitor = new VisitorInfo();
-                visitor.Id = Guid.NewGuid();
-                visitor.LastVisitAt = DateTime.Now;
-                visitor.UserAgent = Request.Headers[HeaderNames.UserAgent];
-                visitor.IpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                visitor.UserId = user.Id;
-
-                _statisticsManager.SaveVisitor(visitor);
-
                 return Ok();
             }
 
