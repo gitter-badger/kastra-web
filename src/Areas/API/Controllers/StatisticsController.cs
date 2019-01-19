@@ -45,13 +45,14 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetVisitorsByDay()
+        public IActionResult GetVisitorsByDay(int? index)
         {
+            int tableIndex = index ?? 0;
             int nbVisits = 0;
             string label = null;
             DateTime date;
             DateTime dateNow = DateTime.Now;
-            DateTime dateFrom = dateNow.AddDays(-14);
+            DateTime dateFrom = dateNow.AddDays(14*(tableIndex-1));
             DataSet dataSet = new DataSet();
             List<string> labels = new List<string>(14);
 
@@ -82,13 +83,14 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetVisits(int page = 0)
+        public IActionResult GetVisits(int? index)
         {
+            int pageIndex = index ?? 0;
             int pageSize = 5;
             VisitModel visitModel = null;
             List<VisitModel> model = new List<VisitModel>(pageSize);
             IList<VisitorInfo> visits = _statisticsManager.GetVisitsFromDate(DateTime.MinValue, DateTime.Now)
-                                                          .OrderByDescending(v => v.LastVisitAt).Skip(page * pageSize)
+                                                          .OrderByDescending(v => v.LastVisitAt).Skip((pageIndex + 1) * pageSize)
                                                           .Take(pageSize).ToList();
 
             foreach(VisitorInfo visitor in visits)
@@ -108,13 +110,16 @@ namespace Kastra.Web.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetRecentUsers()
+        public IActionResult GetRecentUsers(int? index)
         {
+            int pageIndex = index ?? 0;
+            int pageSize = 5;
             UserModel userModel = null;
             List<UserModel> model = new List<UserModel>(5);
             IEnumerable<ApplicationUser> users = _userManager.Users
-                                                      .ToList()
-                                                      .TakeLast(5);
+                                                    .OrderByDescending(u => u.DateCreated)
+                                                      .Skip(pageIndex * pageSize)
+                                                      .Take(pageSize).ToList();
 
             foreach(ApplicationUser user in users)
             {
