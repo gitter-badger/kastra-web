@@ -90,7 +90,7 @@ namespace Kastra.Web.API.Controllers
             VisitModel visitModel = null;
             List<VisitModel> model = new List<VisitModel>(pageSize);
             IList<VisitorInfo> visits = _statisticsManager.GetVisitsFromDate(DateTime.MinValue, DateTime.Now)
-                                                          .OrderByDescending(v => v.LastVisitAt).Skip((pageIndex + 1) * pageSize)
+                                                          .OrderByDescending(v => v.LastVisitAt).Skip(pageIndex * pageSize)
                                                           .Take(pageSize).ToList();
 
             foreach(VisitorInfo visitor in visits)
