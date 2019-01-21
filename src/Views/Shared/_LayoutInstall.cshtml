@@ -19,7 +19,7 @@
 <body>
     <!-- Header -->
     <div id="page-content" class="main-container">
-
+        <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
         <!-- Slider -->
         <div class="header-container">
             <header id="header">
@@ -29,14 +29,13 @@
         </div>
         <div class="content-container">
             <div class="content">
-                <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
                 <!-- Content -->
                 @RenderBody()
             </div>
             <!-- Footer -->
             <footer id="footer">
                 <div class="copyright">
-                    &copy; 2017 - 2018 Kastra. All rights reserved.
+                    &copy; 2017 - 2019 Kastra. All rights reserved.
                 </div>
             </footer>
         </div>
