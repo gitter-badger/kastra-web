@@ -21,6 +21,8 @@ namespace Kastra.Web.Filters
             {
                 controller.ViewBag.Title = siteConfiguration.Title;
                 controller.ViewBag.Theme = siteConfiguration.Theme;
+                controller.ViewBag.ConsentNotice = siteConfiguration.ConsentNotice;
+                controller.ViewBag.CookieUsePolicyUrl = siteConfiguration.CookieUsePolicyUrl;
             }
         }
     }

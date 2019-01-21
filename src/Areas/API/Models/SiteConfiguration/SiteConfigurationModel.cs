@@ -14,6 +14,9 @@
         public string EmailSender { get; set; }
         public bool RequireConfirmedEmail { get; set; }
         public string Theme { get; set; }
+        public string CookieUsePolicyUrl { get; set; }
+        public string ConsentNotice { get; set; }
+        public bool CheckConsentNeeded { get; set; }
 
         public string[] ThemeList { get; set; }
     }

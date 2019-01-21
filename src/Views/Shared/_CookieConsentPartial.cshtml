@@ -9,25 +9,29 @@
 @if (showBanner)
 {
     <nav id="cookieConsent" class="cookie-consent" role="alert">
+        <div class="hidden-container hidden">
+            <button type="button" class="btn-show">
+                <span class="ion-ios-arrow-up"></span>
+            </button>
+        </div>
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#cookieConsent .navbar-collapse">
-                    <span class="sr-only">Toggle cookie consent banner</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></span>
-            </div>
-            <div class="collapse navbar-collapse">
-                <p class="navbar-text">
-                    Use this space to summarize your privacy and cookie use policy.
+            <button type="button" class="btn-hide">
+                <span class="ion-ios-arrow-down"></span>
+            </button>
+            <div>
+                <p>
+                    @ViewBag.ConsentNotice
+                    <!-- Use this space to summarize your privacy and cookie use policy. -->
+                    @if (!string.IsNullOrEmpty(ViewBag.CookieUsePolicyUrl))
+                    {
+                        <a href=@ViewBag.CookieUsePolicyUrl>Learn More</a>
+                    }
                 </p>
-                <div class="navbar-right">
-                    <a asp-page="/Privacy" class="btn btn-info navbar-btn">Learn More</a>
-                    <button type="button" class="btn btn-default navbar-btn" data-cookie-string="@cookieString">Accept</button>
-                </div>
+                
+                
             </div>
+            
+            <button type="button" class="button button-primary" data-cookie-string="@cookieString">Accept</button>
         </div>
     </nav>
     <script type="text/javascript">
@@ -35,6 +39,14 @@
             document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
                 document.cookie = el.target.dataset.cookieString;
                 document.querySelector("#cookieConsent").classList.add("hidden");
+            }, false);
+            document.querySelector("#cookieConsent .btn-show").addEventListener("click", function (el) {
+                document.querySelector("#cookieConsent .hidden-container").classList.add("hidden");
+                document.querySelector("#cookieConsent .container").classList.remove("hidden");
+            }, false);
+            document.querySelector("#cookieConsent .btn-hide").addEventListener("click", function (el) {
+                document.querySelector("#cookieConsent .hidden-container").classList.remove("hidden");
+                document.querySelector("#cookieConsent .container").classList.add("hidden");
             }, false);
         })();
     </script>

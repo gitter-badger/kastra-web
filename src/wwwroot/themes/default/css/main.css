@@ -100,7 +100,6 @@ button.button {
 .field input[type="text"]:focus, .field input[type="password"]:focus, .field input[type="email"]:focus {
     border: 1px solid #1997c6;
     box-shadow: 0 0 0 1px #1997c6;
-    border-top: 0;
 }
 
 .field-checkbox, .field-radio {
@@ -434,7 +433,7 @@ button.button {
     position: relative;
     background-color: white;
     z-index: 1;
-    border-top: 1px solid #4d4d4d;
+    box-shadow: 0 0 0 2px #4d4d4d;
 }
 
 .content {
@@ -553,9 +552,39 @@ button.button {
     display: block;
     position: fixed;
     bottom: 0;
-    background-color: #FFF;
+    color: #FFF;
+    width: 100%;
 }
 
-.cookie-consent.hidden {
-    display: none;
+.hidden {
+    display: none !important;
+}
+
+.cookie-consent .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(60, 60, 60, 0.95);
+}
+
+.cookie-consent .btn-hide {
+    color: #FFF;
+    background: none;
+    cursor: pointer;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.cookie-consent .btn-show {
+    color: rgba(60, 60, 60, 0.95);
+    background: none;
+    cursor: pointer;
+    border: none;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.cookie-consent .container a {
+    color: #1997c6;
 }

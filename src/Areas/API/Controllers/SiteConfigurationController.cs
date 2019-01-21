@@ -60,6 +60,9 @@ namespace Kastra.Web.API.Controllers
             model.RequireConfirmedEmail = configuration.RequireConfirmedEmail;
             model.Theme = configuration.Theme;
             model.ThemeList = themes?.Select(t => t.Name)?.OrderBy(t => t)?.ToArray() ?? new string[] { Constants.SiteConfig.DefaultTheme };
+            model.CookieUsePolicyUrl = configuration.CookieUsePolicyUrl;
+            model.ConsentNotice = configuration.ConsentNotice;
+            model.CheckConsentNeeded = configuration.CheckConsentNeeded;
 
             return Json(model);
 		}
@@ -81,6 +84,9 @@ namespace Kastra.Web.API.Controllers
             conf.EmailSender = model.EmailSender;
             conf.RequireConfirmedEmail = model.RequireConfirmedEmail;
             conf.Theme = model.Theme;
+            conf.CookieUsePolicyUrl = model.CookieUsePolicyUrl;
+            conf.ConsentNotice = model.ConsentNotice;
+            conf.CheckConsentNeeded = model.CheckConsentNeeded;
 
             // Cache
             if (model.CacheActivated)
