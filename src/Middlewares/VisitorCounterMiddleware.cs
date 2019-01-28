@@ -21,7 +21,7 @@ namespace Kastra.Web.Middlewares
         {
             string visitorId = context.Request.Cookies["VisitorId"];
             
-            if (visitorId == null)
+            if (context.Request != null && visitorId == null)
             {
                 VisitorInfo visitor = new VisitorInfo();
                 visitor.Id = Guid.NewGuid();
