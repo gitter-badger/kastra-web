@@ -59,12 +59,6 @@ namespace Kastra.Web
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
-                services.Configure<CookiePolicyOptions>(options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
-
 				services.ConfigureApplicationCookie(options =>
                 {
                     if (appSettings.Configuration.DevelopmentMode)
@@ -186,7 +180,6 @@ namespace Kastra.Web
 
             if(_isInstalled)
             {
-                //IViewManager viewManager = app.ApplicationServices.GetService(typeof(IViewManager)) as IViewManager;
                 IViewManager viewManager = serviceProvider.GetService<IViewManager>() as IViewManager;
                 app.UseModuleStaticFiles(
                     viewManager, 
@@ -208,6 +201,7 @@ namespace Kastra.Web
             {
                 CookiePolicyOptions cookiePolicyOptions = new CookiePolicyOptions
                 {
+                    CheckConsentNeeded = context => true,
                     Secure = CookieSecurePolicy.None,
                     MinimumSameSitePolicy = SameSiteMode.None
                 };
