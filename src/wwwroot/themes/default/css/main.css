@@ -5,6 +5,13 @@
         url('../fonts/Poppins-Bold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Light.ttf') format('truetype'),
+        url('../fonts/Montserrat-Regular.ttf') format('truetype'),
+        url('../fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
 html {
     font-family: 'Poppins';
 }
@@ -13,11 +20,13 @@ h1 {
     color: #FFF;
     font-size: 7rem;
     padding: 1rem 2rem;
+    font-family: 'Montserrat';
 }
 
 h2 {
     color: #000;
     font-size: 2.5rem;
+    font-family: 'Montserrat';
 }
 
 hr {
@@ -224,7 +233,7 @@ button.button {
     top: 0;
     left: 0;
     background: #000;
-    opacity: 0.35;
+    opacity: 0.05;
 }
 
 #header { 
@@ -232,11 +241,11 @@ button.button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3rem 0;
+    padding: 3rem 0 5rem 0;
 }
 
 #header h1 {
-    font-size: 2rem;
+    font-size: 3rem;
     z-index: 1;
 }
 
@@ -271,7 +280,7 @@ button.button {
 #header-navigation {
     display: flex;
     justify-content: flex-end;
-    z-index: 1;
+    z-index: 9999;
     padding: 1.5rem 2rem;
     white-space: nowrap;
     overflow: hidden;
@@ -279,11 +288,12 @@ button.button {
 
 #header-navigation a {
     display: inline-block;
-    color: #FFF;
-    font-size: 0.8rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 400;
     padding: 0.5rem;
     line-height: 1.5rem;
-    z-index: 2;
+    z-index: 1;
 }
 
 #header-navigation a:hover {
@@ -295,35 +305,35 @@ button.button {
 ----------------------------------------------------- */
 
 #navbar {
-    background-color: #000;
+    background-color: #fff;
     position: fixed;
-    top: -50px;
+    top: -60px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: top 0.3s;
+    box-shadow: 0 1px 0 #ccc,0 1px 4px #ddd;
     z-index: 9999;
-    border-bottom: 1px solid #4d4d4d;
   }
   
   #navbar a {
     float: left;
     display: block;
     text-align: center;
-    padding: 15px;
+    padding: 20px;
     text-decoration: none;
-    color: #FFF;
-    font-size: 0.8rem;
+    color: #595959;
+    font-size: 1rem;
   }
   
   #navbar a:hover {
-    color: rgba(255, 255, 255, 0.65);
+    color: #000;
   }
 
   #navbar .logo {
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     margin: 0 10px;
   }
 
@@ -421,7 +431,7 @@ button.button {
     transform: translateZ(-1px) scale(2);
     z-index: -1;
     background-image: url("../images/slide03.jpg");
-    margin-left: -3px;
+    margin-left: -5px;
     background-size: cover;
 }
 
@@ -433,12 +443,12 @@ button.button {
     position: relative;
     background-color: white;
     z-index: 1;
-    box-shadow: 0 0 0 2px #4d4d4d;
+    box-shadow: 0 1px 0 #ccc,0 1px 6px #ddd;
 }
 
 .content {
-    max-width: 750px;
-    min-width: 40%;
+    max-width: 1100px;
+    min-width: 66%;
     margin: 0 auto;
     padding: 1rem 0;
 }
@@ -457,10 +467,13 @@ button.button {
     align-items: center;
     justify-content: center;
     padding: 2rem 0;
-    background: #000;
     text-align: center;
-    color: #bbb;
+    color: #595959;
     min-height: 100px;
+    border-image: linear-gradient(90deg, rgba(90,0,196,1) 0%, rgba(145,5,156,1) 37%, rgba(2,179,215,1) 100%); 
+    border-image-slice: 1;
+    border-image-width: 0.3rem 0 0 0;
+    background-color: #f7f7f7;
 }
 
 /* ---------------------------------------------------
