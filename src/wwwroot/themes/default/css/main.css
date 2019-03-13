@@ -283,7 +283,6 @@ button.button {
     z-index: 9999;
     padding: 1.5rem 2rem;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 #header-navigation a {
@@ -471,6 +470,7 @@ button.button {
     color: #595959;
     min-height: 100px;
     border-image: linear-gradient(90deg, rgba(90,0,196,1) 0%, rgba(145,5,156,1) 37%, rgba(2,179,215,1) 100%); 
+    -webkit-border-image: linear-gradient(90deg, rgba(90,0,196,1) 0%, rgba(145,5,156,1) 37%, rgba(2,179,215,1) 100%); 
     border-image-slice: 1;
     border-image-width: 0.3rem 0 0 0;
     background-color: #f7f7f7;
