@@ -432,6 +432,7 @@ button.button {
     background-image: url("../images/slide03.jpg");
     margin-left: -5px;
     background-size: cover;
+    -webkit-overflow-scrolling: touch;
 }
 
 .content-container {
