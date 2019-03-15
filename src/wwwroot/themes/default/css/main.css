@@ -427,7 +427,7 @@ button.button {
     flex: 1 0 auto;
     position: relative;
     height: 100vh;
-    transform: translateZ(-1px) scale(2);
+    transform: translateZ(-1px) scale(2.1);
     z-index: -1;
     background-image: url("../images/slide03.jpg");
     margin-left: -5px;
@@ -439,7 +439,6 @@ button.button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
     position: relative;
     background-color: white;
     z-index: 1;
