@@ -50,8 +50,8 @@
             <nav id="header-navigation">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <span>Hello @UserManager.GetUserName(User)!</span>
-                    <span>&#8239;</span>
+                    <!-- <span>Hello @UserManager.GetUserName(User)!</span> -->
+                    <!-- <span>&#8239;</span> -->
                     <a href="/"><span>Home</span></a>
                     <span>&#8239;</span>
                     <a asp-controller="Manage" asp-action="Index">Mon compte</a>
