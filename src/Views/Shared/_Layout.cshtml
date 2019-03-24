@@ -25,11 +25,15 @@
     <link rel="stylesheet" href="@Url.Content($"~/themes/{themeName}/css/reset.css")" />
     <link rel="stylesheet" href="@Url.Content($"~/themes/{themeName}/css/main.css")" />
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/vs2015.min.css">
 
     <!-- Scripts -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.scrollex.min.js"></script>
     <script src="/js/plugins/dynamicsjs/dynamics.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+
+	<script>hljs.initHighlightingOnLoad();</script>
 
     @RenderSection("scripts", required: false)
 </head>

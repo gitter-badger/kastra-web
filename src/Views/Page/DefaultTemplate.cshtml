@@ -41,11 +41,11 @@
     </div>
 
     <div class="content-container">
-        <div class="content">
+        <main class="content">
             @await Component.InvokeAsync(Model.Header.ModuleViewComponent, new { data = Model.Header })
             @await Component.InvokeAsync(Model.Body.ModuleViewComponent, new { data = Model.Body })
             @await Component.InvokeAsync(Model.Footer.ModuleViewComponent, new { data = Model.Footer })
-        </div>
+        </main>
         <!-- Footer -->
         <footer id="footer">
             <div class="copyright">
@@ -61,7 +61,7 @@
         if (page.scrollTop > header.offsetHeight) {
             document.getElementById("navbar").style.top = "0px";
         } else {
-            document.getElementById("navbar").style.top = "-50px";
+            document.getElementById("navbar").style.top = "-60px";
         }
     };
 </script>
