@@ -625,7 +625,7 @@ button.button {
 }
 
 .grid-element {
-    max-width: 35vw;
+    max-width: 520px;
     margin: 1rem 0;
     width: 100%;
 }
