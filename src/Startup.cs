@@ -88,7 +88,7 @@ namespace Kastra.Web
             DirectoryAssemblyLoader.LoadAllAssemblies(appSettings);
             int assembliesLength = KastraAssembliesContext.Instance.Assemblies.Count;
 
-            if(assembliesLength > 0)
+            if(assembliesLength > 0 && !String.IsNullOrEmpty(connectionString))
             {
                 Assembly[] assemblies = new Assembly[assembliesLength];
                 KastraAssembliesContext.Instance.Assemblies.Values.CopyTo(assemblies, 0);
@@ -184,7 +184,7 @@ namespace Kastra.Web
                 app.UseModuleStaticFiles(
                     viewManager, 
                     appSettings.Configuration.ModuleDirectoryPath,
-                    $"/{Constants.SiteConfig.DefaultModuleResourcesPath}");
+                    Constants.SiteConfig.DefaultModuleResourcesPath);
             }
 
 			if(appSettings.Cors.EnableCors)
