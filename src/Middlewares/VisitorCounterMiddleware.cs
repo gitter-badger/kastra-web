@@ -19,6 +19,11 @@ namespace Kastra.Web.Middlewares
 
         public async Task InvokeAsync(HttpContext context, IStatisticsManager statisticsManager)
         {
+            if (statisticsManager == null)
+            {
+                throw new ArgumentNullException(nameof(statisticsManager));
+            }
+
             string visitorId = context.Request.Cookies["VisitorId"];
             
             if (context.Request != null && visitorId == null)
